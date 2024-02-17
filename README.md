@@ -12,7 +12,23 @@ This is a responsive web application built using the MERN stack (MongoDB, Expres
 
 **Getting Started:**
 
-Refer to the `INSTALLATION.md` file for detailed instructions on setting up and running the application locally.
+Follow the below steps for installation:-
+
+**Step 1:-**
+Clone the repo by the below code:
+
+>gh repo clone Shubham937Raval/My_Shopping_System
+
+Or else you can Locally install the zip file.
+
+**Step 2:-**
+run the below command :
+>npm i
+or
+>npm install
+
+**Step 3:-**
+>npm run dev
 
 **Contributing:**
 
