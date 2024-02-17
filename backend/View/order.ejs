@@ -1,0 +1,123 @@
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+      <h1 class="h2">Orders</h1>
+
+      <div class="btn-toolbar mb-2 mb-md-0">
+        <select id="selectorderID" >
+          <option value="Select" class="disabled">
+            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
+              ---Select---
+            </button>
+          </option>
+          <option value="Today">
+            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
+              Today
+            </button>
+          </option>
+          <option value="Week">
+            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
+              This week
+            </button>
+          </option>
+          <option value="Month">
+            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
+              This month
+            </button>
+          </option>
+          <option value="This Year">
+            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
+              This year
+            </button>
+          </option>
+          <option value="Last Year">
+            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
+              Last year
+            </button>
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="container">
+      <div class="d-flex justify-content-between">
+        <button class="btn btn-outline-info active"><span id="selectorderdiv"></span>
+        </button>
+      </div>
+    </div>
+    <!-- <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas> -->
+  </main>
+  <script>
+    $(document).ready(()=>{
+      $('#selectorderdiv').text($('#selectorderID').val());
+      $('#selectorderID').on('change',()=>{
+        if($('#selectorderID').val() === "Today"){
+          $('#selectorderdiv').text($('#selectorderID').val() + " : "+'<%=todayOrder%>');
+        }
+        else if($('#selectorderID').val() === "Week"){
+          $('#selectorderdiv').text($('#selectorderID').val() + " : " + '<%=thisweekOrder%>');
+        }
+        else if($('#selectorderID').val() === "Month"){
+          $('#selectorderdiv').text($('#selectorderID').val() + " : " + '<%=thismonthOrder%>');
+        }
+        else if($('#selectorderID').val() === "This Year"){
+          $('#selectorderdiv').text($('#selectorderID').val() + " : " + '<%=thisyearOrder%>');
+        }
+        else if($('#selectorderID').val() === "Last Year"){
+          $('#selectorderdiv').text($('#selectorderID').val() + " : " + '<%=lastyearOrder%>');
+        }
+        else{
+          $('#selectorderdiv').text($('#selectorderID').val());
+        }
+      })
+    })
+  </script>
+
+  <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.2/dist/chart.umd.js" integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp" crossorigin="anonymous"></script>
+  <script>
+    (() => {
+    'use strict'
+  
+    // Graphs
+    const ctx = document.getElementById('myChart')
+    // eslint-disable-next-line no-unused-vars
+    const myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [
+          'Sunday',
+          'Monday',
+          'Tuesday',
+          'Wednesday',
+          'Thursday',
+          'Friday',
+          'Saturday'
+        ],
+        datasets: [{
+          data: [
+            15339,
+            21345,
+            18483,
+            24003,
+            23489,
+            24092,
+            12034
+          ],
+          lineTension: 0,
+          backgroundColor: 'transparent',
+          borderColor: '#007bff',
+          borderWidth: 4,
+          pointBackgroundColor: '#007bff'
+        }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            boxPadding: 3
+          }
+        }
+      }
+    })
+  })()
+  </script> -->

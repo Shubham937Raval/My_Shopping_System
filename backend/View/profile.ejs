@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% var myname=name.charAt(0).toUpperCase()+name.slice(1) %>
+        <title>
+            <%= myname %> | Profile
+        </title>
+
+        <style>
+            .gm-err-container {
+                height: 100%;
+                width: 100%;
+                display: table;
+                background-color: #e8eaed;
+                position: relative;
+                left: 0;
+                top: 0
+            }
+
+            .gm-err-content {
+                border-radius: 1px;
+                padding-top: 0;
+                padding-left: 10%;
+                padding-right: 10%;
+                position: static;
+                vertical-align: middle;
+                display: table-cell
+            }
+
+            .gm-err-content a {
+                color: #3c4043
+            }
+
+            .gm-err-icon {
+                text-align: center
+            }
+
+            .gm-err-title {
+                margin: 5px;
+                margin-bottom: 20px;
+                color: #3c4043;
+                font-family: Roboto, Arial, sans-serif;
+                text-align: center;
+                font-size: 24px
+            }
+
+            .gm-err-message {
+                margin: 5px;
+                color: #3c4043;
+                font-family: Roboto, Arial, sans-serif;
+                text-align: center;
+                font-size: 12px
+            }
+
+            .gm-err-autocomplete {
+                padding-left: 20px;
+                background-repeat: no-repeat;
+                -webkit-background-size: 15px 15px;
+                background-size: 15px 15px
+            }
+        </style>
+        <style>
+            .gm-style-moc {
+                background-color: rgba(0, 0, 0, .45);
+                pointer-events: none;
+                text-align: center;
+                -webkit-transition: opacity ease-in-out;
+                transition: opacity ease-in-out
+            }
+
+            .gm-style-mot {
+                color: white;
+                font-family: Roboto, Arial, sans-serif;
+                font-size: 22px;
+                margin: 0;
+                position: relative;
+                top: 50%;
+                transform: translateY(-50%);
+                -webkit-transform: translateY(-50%);
+                -ms-transform: translateY(-50%)
+            }
+        </style>
+        <style>
+            .gm-style img {
+                max-width: none;
+            }
+
+            .gm-style {
+                font: 400 11px Roboto, Arial, sans-serif;
+                text-decoration: none;
+            }
+        </style>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+
+
+
+        <!-- GOOGLE FONT -->
+        <link href="https://fonts.googleapis.com/css?family=Raleway:500" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet" type="text/css">
+
+
+        <!-- MATERIAL ICON FONT -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!-- FONT AWESOME -->
+        <link href="https://www.trimatrixlab.com/store/flatrica/stylesheets/vendors/font-awesome.min.css" rel="stylesheet">
+
+
+
+
+
+        <!-- MATERIALIZE -->
+        <link href="https://www.trimatrixlab.com/store/flatrica/stylesheets/vendors/materialize.css" rel="stylesheet">
+        <!-- BOOTSTRAP -->
+        <link href="https://www.trimatrixlab.com/store/flatrica/stylesheets/vendors/bootstrap.min.css" rel="stylesheet">
+
+        <!-- CUSTOM STYLE -->
+        <link href="https://www.trimatrixlab.com/store/flatrica/stylesheets/style_dark_dark.css" id="switch_style" rel="stylesheet">
+</head>
+
+<body>
+    <header id="home">
+        
+        <div class="header-background section">
+                <div class="d-flex justify-content-center">
+                    <button class="btn btn-outline-dark " style="background-color: #46abff;margin-left: 10px;color: black;" id="homebutton">
+                        <i class="material-icons" style="margin-top: -20%;">home</i>
+                        </button>
+                </div>
+        </div>
+        </header>
+    <div id="v-card-holder" class="section" data-sr-id="50"
+        style="visibility: visible;  -webkit-transform: translateY(0) scale(1); opacity: 1;transform: translateY(0) scale(1); opacity: 1;-webkit-transition: -webkit-transform 1.4s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 1.4s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; transition: transform 1.4s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 1.4s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; ">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div id="v-card" class="card">
+                        <div id="profile" class="right">
+                            <img alt="profile-image" class="img-responsive" src=<%= imgurl %>>
+                            <div class="slant"></div>
+                        </div>
+
+
+
+                        <div class="card-content">
+
+                            <!-- NAME & STATUS -->
+                            <div class="info-headings">
+                                <h4 class="text-uppercase left"><%= myname %></h4>
+                                <h6 class="text-capitalize left"><%= role %></h6>
+                            </div>
+
+                            <!-- CONTACT INFO -->
+                            <div class="infos">
+                                <ul class="profile-list">
+                                    <li class="clearfix">
+                                        <span class="title"><i class="material-icons">email</i></span>
+                                        <span class="content"><%= email %></span>
+                                    </li>
+                                    <li class="clearfix">
+                                        <span class="title"><i class="material-icons">language</i></span>
+                                        <span class="content">AI_Shopping_System.com</span>
+                                    </li>
+                                    <li class="clearfix">
+                                        <span class="title"><i class="material-icons">phone</i></span>
+                                        <span class="content"><%= phone %></span>
+                                    </li>
+                                    <li class="clearfix">
+                                        <span class="title"><i class="material-icons">place</i></span>
+                                        <span class="content">
+                                            <% if (address !== null) { %>
+                                                <%= address %>
+                                              <% } else { %>
+                                                Not Set
+                                              <% } %>
+                                        </span>
+                                    </li>
+
+                                </ul>
+                            </div>
+
+                            <!--LINKS-->
+                            <div class="links">
+                                <!-- FACEBOOK-->
+                                <a href="/profile" id="first_one" class="social btn-floating indigo"><i
+                                        class="fa fa-facebook"></i></a>
+                                <!-- TWITTER-->
+                                <a href="/profile" class="social  btn-floating blue"><i class="fa fa-twitter"></i></a>
+                                <!-- GOOGLE+-->
+                                <a href="/profile" class="social  btn-floating red"><i class="fa fa-google-plus"></i></a>
+                                <!-- LINKEDIN-->
+                                <a href="/profile" class="social  btn-floating blue darken-3"><i
+                                        class="fa fa-linkedin"></i></a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="position: absolute; left: 0px; top: -2px; height: 1px; overflow: hidden; width: 1px;">
+        <span style="position: absolute; font-size: 300px; width: auto; height: auto; margin: 0px; padding: 0px; font-family: Roboto, Arial, sans-serif;">
+            BESbswy
+        </span>
+        <span id="token" style="visibility: hidden;"><%= tok %></span>
+    </div>
+</body>
+<script>
+    sessionStorage.setItem('token',document.getElementById('token').innerHTML);
+    document.getElementById('homebutton').setAttribute('title','Go Back');
+    document.getElementById('homebutton').addEventListener('click',()=>{window.location.href="/dashboard"})
+</script>
+</html>

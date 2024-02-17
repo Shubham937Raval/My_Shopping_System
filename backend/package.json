@@ -1,0 +1,29 @@
+{
+  "name": "My_Shopping_System",
+  "version": "1.0.0",
+  "description": "This is simple E-Commerce web-App.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app",
+    "dev": "nodemon app"
+  },
+  "author": "Shubham Raval",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "connect-flash": "^0.1.1",
+    "dotenv": "^16.4.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.18.0",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "mongoose": "^8.1.1",
+    "node-localstorage": "^3.0.5",
+    "store": "^2.0.12"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
+}
