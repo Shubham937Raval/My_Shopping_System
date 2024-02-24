@@ -1,6 +1,112 @@
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Products</h1>
+    <div class="d-flex justify-content-center">
+      <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#AddModal" id="createcategory"><i
+          class="bi bi-plus"></i> Create Category</button>
+    </div>
+    <div class="modal fade" id="AddModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="myModalLabel">Add Category</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form class="col g-2" method="post">
+            <div class="modal-body">
+              <div class="row-md-4">
+                <label class="form-label">Category Name:</label>
+                <input class="form-control" name="newcategory"></input>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">ADD</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="d-flex justify-content-center">
+      <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#myModal" id="createcategory"><i
+          class="bi bi-view-list"></i> View Category</button>
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Category List</h5>
+            <button type="button" class="btn-close" id="closeviewCategory" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="col g-2">
+            <div class="modal-body">
+              <div class="row-md-4">
+                <table class="table-responsive" id="CategoryListTable">
+                  <thead>
+                    <tr>
+                        <th style="width: 300px">Category Name</th>
+                        <th class="col-sm">Operation</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% Category.forEach(function(i){ %>
+                    <tr id="tr<%=Category.indexOf(i)%>">
+                      <td>
+                        <label class="form-label" id="label<%=Category.indexOf(i)%>"><%=i.Product_Category%></label>
+                      </td>
+                      <td>
+                        <div class="d-flex">
+                          <button class="btn btn-outline-secondary mx-3" id="delete<%=Category.indexOf(i)%>">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                              <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                              <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                            </svg></button>
+                            <span style="display: none;" id="btn<%=Category.indexOf(i)%>"><%=i.Product_Category%></span>
+                        </div>
+                      </td>
+                    </tr>
+                    <% }) %>
+                  </tbody>
+                </table>
+                <script>
+                  $(document).ready(()=>{
+                    let temparr = []
+                    let rows = $('#CategoryListTable > tbody > tr').length;
+                    for(let i=0;i<rows;i++){
+                      temparr.push(i);
+                    }
+                    temparr.forEach(
+                      i=>{
+                        document.getElementById(`delete${i}`).addEventListener('click',()=>{
+                          let CategoryName = document.getElementById(`label${i}`).innerText;
+                          let msg = "Want to delete " + CategoryName + " ?"
+                          if(confirm(msg)){
+                            (async()=>{
+                              let url = `http://10.16.16.107:8000/deleteProductcategory/${CategoryName}`;
+                              let response = await fetch(url);
+                              response;
+                              document.getElementById(`tr${i}`).remove();
+                            })()
+                          }
+                          document.getElementById('closeviewCategory').addEventListener('click',()=>{
+                            window.location.href='/product';
+                          })
+                        })
+                      }
+                    )
+                  })
+                </script>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="closeviewCategory" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="btn-toolbar btn-outline-info mb-2 mb-md-0">
       <select id="selectProductID" class="btn btn-sm btn-outline-info">
         <option value="Category">
@@ -139,9 +245,6 @@
             <th>
               <%= Sportshead[9] %>
             </th>
-            <th>
-              <%= Sportshead[10] %>
-            </th>
           </tr>
         </thead>
         <tbody>
@@ -193,6 +296,9 @@
       <thead>
         <tr>
           <th>
+            ID
+          </th>
+          <th>
             <%= Kitchenhead[7] %>
           </th>
           <th>
@@ -230,6 +336,9 @@
       <tbody>
         <%KitchenAllObject.forEach(function(i){%>
           <tr>
+            <td>
+              <%=KitchenAllObject.indexOf(i)+1%>
+            </td>
             <td>
               <%=i.Customer_ID%>
             </td>
@@ -271,6 +380,9 @@
       <thead>
         <tr>
           <th>
+            ID
+          </th>
+          <th>
             <%= Electronicshead[7] %>
           </th>
           <th>
@@ -289,25 +401,28 @@
             <%= Electronicshead[0] %>
           </th>
           <th>
-            <%= Kitchenhead[4] %>
+            <%= Electronicshead[4] %>
           </th>
           <th>
-            <%= Kitchenhead[5] %>
+            <%= Electronicshead[5] %>
           </th>
           <th>
-            <%= Kitchenhead[8] %>
+            <%= Electronicshead[8] %>
           </th>
           <th>
-            <%= Kitchenhead[9] %>
+            <%= Electronicshead[9] %>
           </th>
           <th>
-            <%= Kitchenhead[10] %>
+            <%= Electronicshead[10] %>
           </th>
         </tr>
       </thead>
       <tbody>
         <%ElectronicsAllObject.forEach(function(i){%>
           <tr>
+            <td>
+              <%=ElectronicsAllObject.indexOf(i)+1%>
+            </td>
             <td>
               <%=i.Customer_ID%>
             </td>
@@ -349,6 +464,9 @@
       <thead>
         <tr>
           <th>
+            ID
+          </th>
+          <th>
             <%= Clothinghead[7] %>
           </th>
           <th>
@@ -386,6 +504,9 @@
       <tbody>
         <%ClothingAllObject.forEach(function(i){%>
           <tr>
+            <td>
+              <%=ClothingAllObject.indexOf(i)+1%>
+            </td>
             <td>
               <%=i.Customer_ID%>
             </td>
@@ -427,6 +548,9 @@
       <thead>
         <tr>
           <th>
+            ID
+          </th>
+          <th>
             <%= Beautyhead[7] %>
           </th>
           <th>
@@ -464,6 +588,9 @@
       <tbody>
         <%BeautyAllObject.forEach(function(i){%>
           <tr>
+              <td>
+                <%=BeautyAllObject.indexOf(i)+1%>
+              </td>
             <td>
               <%=i.Customer_ID%>
             </td>
@@ -505,6 +632,9 @@
       <thead>
         <tr>
           <th>
+            ID
+          </th>
+          <th>
             <%= Bookshead[7] %>
           </th>
           <th>
@@ -542,6 +672,9 @@
       <tbody>
         <%BooksAllObject.forEach(function(i){%>
           <tr>
+            <td>
+              <%=BooksAllObject.indexOf(i)+1%>
+            </td>
             <td>
               <%=i.Customer_ID%>
             </td>
@@ -824,59 +957,9 @@
           $("#tablebeautydiv").show();
           $("#categorywiserordercount").text("<%=beautyordercount%>");
           $("#categorywiserevenue").text("<%=Math.round(beautyandhealthrevenue)%>");
-          getPagination('#  tablebeautydiv');
+          getPagination('#tablebeautydiv');
         }
       }
     });
   });
 </script>
-<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.2/dist/chart.umd.js" integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp" crossorigin="anonymous"></script>
-  <script>
-    (() => {
-    'use strict'
-  
-    // Graphs
-    const ctx = document.getElementById('myChart')
-    // eslint-disable-next-line no-unused-vars
-    const myChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: [
-          'Sunday',
-          'Monday',
-          'Tuesday',
-          'Wednesday',
-          'Thursday',
-          'Friday',
-          'Saturday'
-        ],
-        datasets: [{
-          data: [
-            15339,
-            21345,
-            18483,
-            24003,
-            23489,
-            24092,
-            12034
-          ],
-          lineTension: 0,
-          backgroundColor: 'transparent',
-          borderColor: '#007bff',
-          borderWidth: 4,
-          pointBackgroundColor: '#007bff'
-        }]
-      },
-      options: {
-        plugins: {
-          legend: {
-            display: false
-          },
-          tooltip: {
-            boxPadding: 3
-          }
-        }
-      }
-    })
-  })()
-  </script> -->
