@@ -1,6 +1,7 @@
 const {adminClass} = require('../Service/AdminClass');
 const lodash = require('lodash');
 var adminObj;
+var mycategoryhead;
 exports.superAdminRegister = async(req,res)=>{
     try {
 
@@ -32,7 +33,6 @@ exports.adminLogin = async(req,res)=>{
         if(!lodash.isEmpty(checkAdmin[0])){
             await adminClass.loginToken(checkAdmin[0]._id.toString()).then(i=>{
                 try{
-
                     req.session.token = i.token
                 }
                 catch(err){
@@ -65,25 +65,36 @@ exports.getdashboardData = async(req,res)=>{
             let lifetimeearning = await adminClass.getLifeTimeRevenuecount();
             let todayOrder = await adminClass.getTodayOrdercount();
             let todayRevenue = await adminClass.getTodayRevenuecount();
-            return res.render('data',{tok:req.session.token,titlehead:"Dashboard",name:adminObj.firstName,totalLifetimeRevenue:lifetimeearning,totalLifetimeOrder:lifeTimeOrder,todayOrder:todayOrder,todayRevenue:todayRevenue});
+            let monthwiserevenuearray = [];
+            monthwiserevenuearray.push(await adminClass.getrevenue("Jan").then(ii=>{return +Math.round(ii).toString().substring(0,5)}));
+            monthwiserevenuearray.push(await adminClass.getrevenue("Feb").then(ii=>{return +Math.round(ii).toString().substring(0,5)}));
+            monthwiserevenuearray.push(await adminClass.getrevenue("Mar").then(ii=>{return +Math.round(ii).toString().substring(0,5)}));
+            monthwiserevenuearray.push(await adminClass.getrevenue("Apr").then(ii=>{return +Math.round(ii).toString().substring(0,5)}));
+            monthwiserevenuearray.push(await adminClass.getrevenue("May").then(ii=>{return +Math.round(ii).toString().substring(0,5)}));
+            monthwiserevenuearray.push(await adminClass.getrevenue("Jun").then(ii=>{return +Math.round(ii).toString().substring(0,5)}));
+            monthwiserevenuearray.push(await adminClass.getrevenue("Jul").then(ii=>{return +Math.round(ii).toString().substring(0,5)}));
+            monthwiserevenuearray.push(await adminClass.getrevenue("Aug").then(ii=>{return +Math.round(ii).toString().substring(0,5)}));
+            monthwiserevenuearray.push(await adminClass.getrevenue("Sep").then(ii=>{return +Math.round(ii).toString().substring(0,5)}));
+            monthwiserevenuearray.push(await adminClass.getrevenue("Oct").then(ii=>{return +Math.round(ii).toString().substring(0,5)}));
+            monthwiserevenuearray.push(await adminClass.getrevenue("Nov").then(ii=>{return +Math.round(ii).toString().substring(0,5)}));
+            monthwiserevenuearray.push(await adminClass.getrevenue("Dec").then(ii=>{return +Math.round(ii).toString().substring(0,5)}));
+            return res.render('data',{
+                tok:req.session.token,
+                titlehead:"Dashboard",
+                name:adminObj.firstName,
+                totalLifetimeRevenue:lifetimeearning,
+                totalLifetimeOrder:lifeTimeOrder,
+                todayOrder:todayOrder,
+                todayRevenue:todayRevenue,
+                graphrevenuedata : monthwiserevenuearray
+            });
         }
     }
     catch(err){
         console.log(err)
     }
 }
-exports.postdashboardData = async(req,res)=>{
-    try{
-        let addcategoryobj = {
-            "Product_Category":req.body.newcategory
-        }
-        await adminClass.addNewCategory(addcategoryobj);
-        return res.redirect('/dashboard');
-    }
-    catch(err){
-        console.log(err);
-    }
-}
+
 exports.orderData = async(req,res)=>{
     try{
         if(adminObj)
@@ -116,105 +127,6 @@ exports.productData = async(req,res)=>{
         {
             console.log("product page");
             let CategoryList = await adminClass.getProductCategories();
-            //Sports
-            let getSportsheadData = await adminClass.getSportsheadData().then(
-                i=>{
-                    return i[0].sporthead;
-                });
-            let getsportAllData = await adminClass.getSportsheadData().then(
-                i=>{
-                    return i[1].allObjectData;
-                }
-            )
-            let getSportsordercount = await adminClass.getSportsheadData().then(
-                i=>{
-                    return i[2].items;
-                }
-            )
-            let getSportsRevenue = await adminClass.getSportsRevenue();
-                //Kitchen
-            let getKitchenheadData = await adminClass.getKitchenheadData().then(
-                i=>{
-                    return i[0].kitchenhead;
-                });
-            let getkitchenAllData = await adminClass.getKitchenheadData().then(
-                i=>{
-                    return i[1].allObjectData;
-                }
-            )
-            let getkitchenordercount = await adminClass.getKitchenheadData().then(
-                i=>{
-                    return i[2].items;
-                }
-            )
-            let getHomeandKitchenRevenue = await adminClass.getHomeandKitchenRevenue();
-
-                //Electronics
-                let getEletronicsheadData = await adminClass.getEletronicsheadData().then(
-                    i=>{
-                        return i[0].electronichead;
-                    });
-                let getelectronicAllData = await adminClass.getEletronicsheadData().then(
-                    i=>{
-                        return i[1].allObjectData;
-                    }
-                )
-                let getelectronicordercount = await adminClass.getEletronicsheadData().then(
-                    i=>{
-                        return i[2].items;
-                    }
-                )
-            let getElectronicsRevenue = await adminClass.getElectronicsRevenue();
-                //Clothing
-            let getClothingheadData = await adminClass.getClothingheadData().then(
-                i=>{
-                    return i[0].clothinghead;
-                });
-            let getclothingAllData = await adminClass.getClothingheadData().then(
-                i=>{
-                    return i[1].allObjectData;
-                }
-            )
-            let getclothingordercount = await adminClass.getClothingheadData().then(
-                i=>{
-                    return i[2].items;
-                }
-            )
-            let getClothingRevenue = await adminClass.getClothingRevenue();
-
-                //Beauty
-                let getBeautyheadData = await adminClass.getBeautyheadData().then(
-                    i=>{
-                        return i[0].beautyhead;
-                    });
-                let getbeautyAllData = await adminClass.getBeautyheadData().then(
-                    i=>{
-                        return i[1].allObjectData;
-                    }
-                )
-                let getbeautyordercount = await adminClass.getBeautyheadData().then(
-                    i=>{
-                        return i[2].items;
-                    }
-                )
-            let getbeautyandhealthRevenue = await adminClass.getbeautyandhealthRevenue();
-
-                //Books
-                let getBooksheadData = await adminClass.getBooksheadData().then(
-                    i=>{
-                        return i[0].bookshead;
-                    });
-                let getbooksAllData = await adminClass.getBooksheadData().then(
-                    i=>{
-                        return i[1].allObjectData;
-                    }
-                )
-                let getbooksordercount = await adminClass.getBooksheadData().then(
-                    i=>{
-                        return i[2].items;
-                    }
-                )
-            let getbooksRevenue = await adminClass.getbooksRevenue();
             return res.render('data',
             {
                 tok:req.session.token,
@@ -222,40 +134,179 @@ exports.productData = async(req,res)=>{
                 name:adminObj.firstName,
                 Category:CategoryList,
                 //sports
-                sportsrevenue:getSportsRevenue,
-                sportordercount:getSportsordercount,
-                Sportshead:getSportsheadData,
-                SportAllObject:getsportAllData,
+                sportsrevenue:await adminClass.getCategorywiseData("Sports & Outdoors").then(
+                    data=>{
+                        let price = 0;
+                        data.forEach(i=>{
+                            price = price + i.Total_Price;
+                        })
+                        return price
+                    }
+                ),
+                sportordercount:await adminClass.getCategorywiseData("Sports & Outdoors").then(
+                    data=>{
+                        return data.length
+                    }
+                ),
+                Sportshead:await adminClass.getCategorywiseData("Sports & Outdoors").then(
+                    data=>{
+                        return Object.keys(Object.entries(data[0])[2][1]).slice(1,Infinity);
+                    }),
+                SportAllObject:await adminClass.getCategorywiseData("Sports & Outdoors").then(
+                    data=>{
+                        return data;
+                    }
+                ),
                 //kitchen
-                homeandkitchenrevenue:getHomeandKitchenRevenue,
-                kitchenordercount:getkitchenordercount,
-                Kitchenhead:getKitchenheadData,
-                KitchenAllObject:getkitchenAllData,
+                homeandkitchenrevenue:await adminClass.getCategorywiseData("Home & Kitchen").then(
+                    data=>{
+                        let price = 0;
+                        data.forEach(i=>{
+                            price = price + i.Total_Price;
+                        })
+                        return price
+                    }
+                ),
+                kitchenordercount:await adminClass.getCategorywiseData("Home & Kitchen").then(
+                    data=>{
+                        return data.length
+                    }
+                ),
+                Kitchenhead:await adminClass.getCategorywiseData("Home & Kitchen").then(
+                    data=>{
+                        return Object.keys(Object.entries(data[0])[2][1]).slice(1,Infinity);
+                    }),
+                KitchenAllObject:await adminClass.getCategorywiseData("Home & Kitchen").then(
+                    data=>{
+                        return data;
+                    }
+                ),
                 //electronics
-                electronicsrevenue:getElectronicsRevenue,
-                electronicsordercount:getelectronicordercount,
-                Electronicshead:getEletronicsheadData,
-                ElectronicsAllObject:getelectronicAllData,
+                electronicsrevenue:await adminClass.getCategorywiseData("Electronics").then(
+                    data=>{
+                        let price = 0;
+                        data.forEach(i=>{
+                            price = price + i.Total_Price;
+                        })
+                        return price
+                    }
+                ),
+                electronicsordercount:await adminClass.getCategorywiseData("Electronics").then(
+                    data=>{
+                        return data.length
+                    }
+                ),
+                Electronicshead:await adminClass.getCategorywiseData("Electronics").then(
+                    data=>{
+                        return Object.keys(Object.entries(data[0])[2][1]).slice(1,Infinity);
+                    }),
+                ElectronicsAllObject:await adminClass.getCategorywiseData("Electronics").then(
+                    data=>{
+                        return data;
+                    }
+                ),
                 //clothing
-                clothingrevenue:getClothingRevenue,
-                clothingordercount:getclothingordercount,
-                Clothinghead:getClothingheadData,
-                ClothingAllObject:getclothingAllData,
+                clothingrevenue:await adminClass.getCategorywiseData("Clothing").then(
+                    data=>{
+                        let price = 0;
+                        data.forEach(i=>{
+                            price = price + i.Total_Price;
+                        })
+                        return price
+                    }
+                ),
+                clothingordercount:await adminClass.getCategorywiseData("Clothing").then(
+                    data=>{
+                        return data.length
+                    }
+                ),
+                Clothinghead:await adminClass.getCategorywiseData("Clothing").then(
+                    data=>{
+                        return Object.keys(Object.entries(data[0])[2][1]).slice(1,Infinity);
+                    }),
+                ClothingAllObject:await adminClass.getCategorywiseData("Clothing").then(
+                    data=>{
+                        return data;
+                    }
+                ),
                 //books
-                booksrevenue:getbooksRevenue,
-                booksordercount:getbooksordercount,
-                Bookshead:getBooksheadData,
-                BooksAllObject:getbooksAllData,
+                booksrevenue:await adminClass.getCategorywiseData("Books").then(
+                    data=>{
+                        let price = 0;
+                        data.forEach(i=>{
+                            price = price + i.Total_Price;
+                        })
+                        return price
+                    }
+                ),
+                booksordercount:await adminClass.getCategorywiseData("Books").then(
+                    data=>{
+                        return data.length
+                    }
+                ),
+                Bookshead:await adminClass.getCategorywiseData("Books").then(
+                    data=>{
+                        return Object.keys(Object.entries(data[0])[2][1]).slice(1,Infinity);
+                    }),
+                BooksAllObject:await adminClass.getCategorywiseData("Books").then(
+                    data=>{
+                        return data;
+                    }
+                ),
                 //beauty
-                beautyordercount:getbeautyordercount,
-                Beautyhead:getBeautyheadData,
-                BeautyAllObject:getbeautyAllData,
-                beautyandhealthrevenue:getbeautyandhealthRevenue
+                beautyordercount:await adminClass.getCategorywiseData("Beauty & Health").then(
+                    data=>{
+                        return data.length
+                    }
+                ),
+                Beautyhead:await adminClass.getCategorywiseData("Beauty & Health").then(
+                    data=>{
+                        return Object.keys(Object.entries(data[0])[2][1]).slice(1,Infinity);
+                    }),
+                BeautyAllObject:await adminClass.getCategorywiseData("Beauty & Health").then(
+                    data=>{
+                        return data;
+                    }
+                ),
+                beautyandhealthrevenue:await adminClass.getCategorywiseData("Beauty & Health").then(
+                    data=>{
+                        let price = 0;
+                        data.forEach(i=>{
+                            price = price + i.Total_Price;
+                        })
+                        return price
+                    }
+                )
             });
         }
     }
     catch(err){
         console.log(err)
+    }
+}
+exports.postproductData = async(req,res)=>{
+    try{
+        let addcategoryobj = {
+            "Product_Category":req.body.newcategory
+        }
+        await adminClass.addNewCategory(addcategoryobj);
+        return res.redirect('/product');
+    }
+    catch(err){
+        console.log("Error is post new Category");
+    }
+}
+exports.deleteProductCategory = async(req,res)=>{
+    try{
+        let productCategoryName = {
+            "Product_Category":req.params.name
+        }
+        await adminClass.DeleteCategory(productCategoryName);
+        req.flash('success','Successfully Deleted');
+        return res.redirect('/product');
+    }
+    catch(err){
+        console.log("Error in Delete Product Category");
     }
 }
 exports.custmorData = async(req,res)=>{
@@ -327,4 +378,19 @@ exports.profileData = async(req,res)=>{
     catch(err){
         console.log(err)
     }
+}
+
+exports.admindetailsAPI = async(req,res)=>{
+    return res.send(await adminClass.getadmindata().then(u=>{return u}));
+}
+exports.ProductListData = async(req,res)=>{
+    let productcategoryname = req.params.categoryname;
+    let productcategoryobject = {};
+    productcategoryobject.response = "ok";
+    productcategoryobject.items = await adminClass.ProductCategoryWiseData(productcategoryname).then(i=>{ return i.items});
+    productcategoryobject.data = await adminClass.ProductCategoryWiseData(productcategoryname).then(i=>{return i.data});
+    return res.send(productcategoryobject);
+}
+exports.CategoryListData = async(req,res)=>{
+     await adminClass.getCategoryList().then(i=>{return res.send(i)});
 }
