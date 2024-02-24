@@ -1,7 +1,18 @@
+const os = require('os');
 const SuperAdmin = require('../Model/adminModel');
+const lodash = require('lodash');
 const jwt = require('jsonwebtoken');
 const isSold = require('../Model/isSoldProductModel.js')
 const CategoryModel = require('../Model/categoryModel.js');
+const laptopProductModel = require('../Model/laptopProductModel.js');
+const mobileProductModel = require('../Model/mobileProductModel.js');
+const foodProductModel = require('../Model/foodProductModel.js');
+const furnProductModel = require('../Model/furnProductModel.js');
+const menswearProductModel = require('../Model/menswearProductModel.js');
+const womenswearProductModel = require('../Model/womenswearProductModel.js');
+const womenfootwearProductModel = require('../Model/womenfootwearProductModel.js');
+const bookProductModel = require('../Model/bookProductModel.js');
+const babbyProductModel = require('../Model/babbyProductModel.js');
 var obj=[];
 var today = new Date();
 exports.adminClass = class admin{
@@ -14,7 +25,26 @@ exports.adminClass = class admin{
       static async checkAdmin(data){
         try{
             const input_admin = await SuperAdmin.find(data).then(
-              (i)=>{
+              async (i)=>{
+                if(lodash.isEmpty(i[0])){
+                  await SuperAdmin.find({email:data.email}).then(
+                    async(ii)=>{
+                      if(!lodash.isEmpty(ii[0])){
+                        await SuperAdmin.findByIdAndUpdate(ii[0]._id.toString(),
+                        {
+                          $push:{
+                            failedLogins:{
+                              Data:today.toISOString(),
+                              ip : {
+                                    local:os.networkInterfaces()
+                                  }      
+                            }
+                          }
+                        })
+                      }
+                    }
+                  )
+                }
                 return i
               }
             )
@@ -31,6 +61,13 @@ exports.adminClass = class admin{
                 {
                     $set:{
                         token:tok
+                    },$push:{
+                      logins:{
+                        Data:today.toISOString(),
+                        ip : {
+                          local:os.networkInterfaces()
+                        }
+                      }
                     }
                 })
           }
@@ -71,6 +108,34 @@ exports.adminClass = class admin{
         }
         catch(err){
           console.log("Error in create new category");
+        }
+      }
+      static async DeleteCategory(data){
+        try{
+          return await CategoryModel.findOneAndDelete(data);
+        }
+        catch(err){
+          console.log("Error in create new category");
+        }
+      }
+      static async getrevenue(monthName){
+        try{
+          return await isSold.find().then(
+            i=>{
+              let revenue = 0;
+              i.forEach(
+                data=>{
+                  if(data.Order_Date.toDateString().split(' ')[1] === monthName){
+                    revenue = revenue + data.Total_Price;
+                  }
+                }
+              )
+              return revenue;
+            }
+          )
+        }
+        catch(err){
+          console.log("Error in revenue according to month name");
         }
       }
       static async getLifeTimeRevenuecount(){
@@ -236,6 +301,14 @@ exports.adminClass = class admin{
         }
         catch(err){
           console.log("Error in getProductCategories")
+        }
+      }
+      static async getCategoryList(){
+        try{
+          return await CategoryModel.find().then(i=>{return i});
+        } 
+        catch(err){
+          console.log("Error in get Category List")
         }
       }
       static async getSportsRevenue(){
@@ -578,6 +651,89 @@ exports.adminClass = class admin{
         }
         catch(err){
           console.log("Error in Books revenue count")
+        }
+      }
+
+      static async getCategorywiseData(CategoryName){
+        try{
+          return await isSold.find({"Product_Category":CategoryName}).then(
+            i=>{
+              return i;
+            }
+          )
+        }
+        catch(err)
+        {
+          console.log("Error is CategorywiseData");
+        }
+      }
+
+      static async getadmindata(){
+        try{
+          return await SuperAdmin.find().then(i=>{
+            return i;
+          })
+        }
+        catch(err){
+          console.log("Error in admin details");
+        }
+      }
+      static async ProductCategoryWiseData(productcategoryname){
+        try{
+          if(productcategoryname === "babies"){
+            let product = {};
+            product.data = await babbyProductModel.find().then(i=>{return i})
+            product.items = await babbyProductModel.find().then(i=>{return i.length})
+            return product;
+          }else if(productcategoryname === "books"){
+            let product = {};
+            product.data = await bookProductModel.find().then(i=>{return i})
+            product.items = await bookProductModel.find().then(i=>{return i.length})
+            return product;
+          }else if(productcategoryname === "food"){
+            let product = {};
+            product.data = await foodProductModel.find().then(i=>{return i})
+            product.items = await foodProductModel.find().then(i=>{return i.length})
+            return product;
+          }else if(productcategoryname === "furniture"){
+            let product = {};
+            product.data = await furnProductModel.find().then(i=>{return i})
+            product.items = await furnProductModel.find().then(i=>{return i.length})
+            return product;
+          }else if(productcategoryname === "laptop"){
+            let product = {};
+            product.data = await laptopProductModel.find().then(i=>{return i})
+            product.items = await laptopProductModel.find().then(i=>{return i.length})
+            return product;
+          }else if(productcategoryname === "men-clothes"){
+            let product = {};
+            product.data = await menswearProductModel.find().then(i=>{return i})
+            product.items = await menswearProductModel.find().then(i=>{return i.length})
+            return product;
+          }else if(productcategoryname === "mobiles"){
+            let product = {};
+            product.data = await mobileProductModel.find().then(i=>{return i})
+            product.items = await mobileProductModel.find().then(i=>{return i.length})
+            return product;
+          }else if(productcategoryname === "women-clothes"){
+            let product = {};
+            product.data = await womenswearProductModel.find().then(i=>{return i})
+            product.items = await womenswearProductModel.find().then(i=>{return i.length})
+            return product;
+          }else if(productcategoryname === "women-footwear"){
+            let product = {};
+            product.data = await womenfootwearProductModel.find().then(i=>{return i})
+            product.items = await womenfootwearProductModel.find().then(i=>{return i.length})
+            return product;
+          }else{
+            let product = {};
+            product.data = "No data"
+            product.items = "No data"
+            return product;
+          }
+        }
+        catch(err){
+          console.log("Error in product categorywise data");
         }
       }
   }
