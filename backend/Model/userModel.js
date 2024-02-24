@@ -48,7 +48,6 @@ exports.userSchema = async()=>{
         },
         token:{
             type:String || null,
-            requried:true
         }
     
     },

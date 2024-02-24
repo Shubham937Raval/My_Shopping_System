@@ -47,6 +47,28 @@ const adminSchema = new mongoose.Schema({
         token:{
             type:String || null,
             default:null
+        },
+        failedLogins:{
+            type : Object,
+            value : {
+                Date : {
+                    type : Date
+                },
+                ip : {
+                    type : Object
+                }
+            }
+        },
+        logins:{
+            type : Object,
+            value : {
+                Date : {
+                    type : Date
+                },
+                ip : {
+                    type : Object
+                }
+            }
         }
     
     },

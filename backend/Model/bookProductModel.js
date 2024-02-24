@@ -14,7 +14,7 @@ const bookProductSchema = new mongoose.Schema({
     },
     "Discount_rates":{
       type : String,
-      required : ture
+      required : true
     }
 });
 
