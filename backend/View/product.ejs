@@ -84,7 +84,7 @@
                           let msg = "Want to delete " + CategoryName + " ?"
                           if(confirm(msg)){
                             (async()=>{
-                              let url = `http://10.16.16.107:8000/deleteProductcategory/${CategoryName}`;
+                              let url = `http://localhost:8000/deleteProductcategory/${CategoryName}`;
                               let response = await fetch(url);
                               response;
                               document.getElementById(`tr${i}`).remove();
